@@ -1,34 +1,67 @@
-import React, { useState } from 'react';
-import './App.css';
-import MindARViewer from './mindar-viewer';
-import MindARThreeViewer from './mindar-three-viewer';
+import { ClerkProvider } from "@clerk/clerk-react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from "./Screens/Dashboard";
+import Home from "./Screens/Home";
+import { ThemeProvider } from "./Context/ThemeContext";
+import { DashBoardProvider } from "./Context/DashboardOptionContext";
+import { OrdersProvider } from "./Context/OrderContext";
+import OrderDetailsScreen from "./Screens/OrderDetailsScreen";
+import DisputeScreen from "./Screens/DisputeScreen";
+import NewOrderScreen from "./Screens/NewOrderScreen";
+import UploadARScreen from "./Screens/UploadARScreen";
+import MindARViewer from "./mindar-viewer";
+// import dotenv from "dotenv";
+// dotenv.config();
+
+const clerkFrontendApi = "pk_test_cGlja2VkLXdhbGxhYnktOTQuY2xlcmsuYWNjb3VudHMuZGV2JA";
+
+if (!clerkFrontendApi) {
+  console.error("Clerk Publishable Key is not defined. Check your .env file.");
+  console.log(process.env)
+}
 
 function App() {
-  const [started, setStarted] = useState(null);
-
   return (
-    <div className="App">
-      <h1>Example React component with <a href="https://github.com/hiukim/mind-ar-js" target="_blank">MindAR</a></h1>
-
-      <div className="control-buttons">
-        {started === null && <button onClick={() => {setStarted('aframe')}}>Start AFRAME version</button>}
-        {started === null && <button onClick={() => {setStarted('three')}}>Start ThreeJS version</button>}
-        {started !== null && <button onClick={() => {setStarted(null)}}>Stop</button>}
-      </div>
-
-      {started === 'aframe' && (
-        <div className="container">
-          <MindARViewer/>
-          <video></video>
-        </div>
-      )}
-
-      {started === 'three' && (
-        <div className="container">
-          <MindARThreeViewer />
-        </div>
-      )}
-    </div>
+    <ClerkProvider
+      publishableKey={clerkFrontendApi}
+      signUpFallbackRedirectUrl="/"
+      signInFallbackRedirectUrl="/"
+    >
+      <ThemeProvider>
+        <DashBoardProvider>
+          <OrdersProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                  path="/dashboard/orderDetails"
+                  element={<OrderDetailsScreen />}
+                />
+                <Route
+                  path="/dashboard/dispute"
+                  element={<DisputeScreen />}
+                />
+                <Route
+                  path="/dashboard/newOrder"
+                  element={<NewOrderScreen />}
+                />
+                <Route
+                  path="/dashboard/addARModel"
+                  element={<UploadARScreen />}
+                />
+                <Route
+                  path="/qr"
+                  element={
+                    <MindARViewer modelUrl="https://modelviewer.dev/shared-assets/models/Astronaut.glb" />
+                  }
+                />
+              </Routes>
+            </BrowserRouter>
+          </OrdersProvider>
+        </DashBoardProvider>
+      </ThemeProvider>
+    </ClerkProvider>
   );
 }
 
