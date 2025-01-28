@@ -20,7 +20,7 @@ const Dashboard = () => {
   const { theme } = useTheme();
   const { selectedOption, changeSelectedOption, setMiniCardClicked } =
     useDashBoard();
-  const admin = true;
+  const admin = false;
   const { setCreateDispute } = useOrders();
   useEffect(() => {
     setCreateDispute(false);

@@ -1,6 +1,7 @@
 import { useState } from "react";
+import NewOrderSteps from "./NewOrderSteps";
 
-function OrientationSelection() {
+function OrientationSelection({ step, setStep, newOrderDetails, setNewOrderDetails }) {
   const [selectedOrientation, setSelectedOrientation] = useState("");
 
   const orientationOptions = [
@@ -16,12 +17,9 @@ function OrientationSelection() {
     },
   ];
 
-  const handleSubmit = () => {
-    if (selectedOrientation) {
-      alert(`Orientation selected: ${selectedOrientation}`);
-    } else {
-      alert("Please select an orientation.");
-    }
+  const handleSubmit = (data) => {
+    setNewOrderDetails({ ...newOrderDetails, ...data })
+    setStep(step + 1)
   };
 
   return (
@@ -33,12 +31,11 @@ function OrientationSelection() {
             key={option.value}
             className={`card shadow-md rounded-lg cursor-pointer overflow-hidden 
               transition-transform duration-200 ease-in-out 
-              ${
-                selectedOrientation === option.value
-                  ? "ring ring-primary ring-offset-2 scale-105"
-                  : "hover:scale-105"
+              ${selectedOrientation === option.value
+                ? "ring ring-primary ring-offset-2 scale-105"
+                : "hover:scale-105"
               }`}
-            onClick={() => setSelectedOrientation(option.value)}
+            onClick={() => { handleSubmit({ cardOrientation: option.value }) }}
           >
             <img
               src={option.image}
@@ -46,18 +43,17 @@ function OrientationSelection() {
               className="w-full h-32 object-cover"
             />
             <div
-              className={`p-4 text-center font-medium ${
-                selectedOrientation === option.value
+              className={`p-4 text-center font-medium ${selectedOrientation === option.value
                   ? "bg-primary text-primary-content"
                   : "bg-base-200 text-base-content"
-              }`}
+                }`}
             >
               {option.label}
             </div>
           </div>
         ))}
       </div>
-
+      <NewOrderSteps setStep={setStep} step={step} />
     </div>
   );
 }

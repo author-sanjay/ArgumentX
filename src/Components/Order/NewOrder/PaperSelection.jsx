@@ -1,6 +1,7 @@
 import { useState } from "react";
+import NewOrderSteps from "./NewOrderSteps";
 
-function PaperSelection() {
+function PaperSelection({ step, setStep, newOrderDetails, setNewOrderDetails }) {
   const [selectedPaper, setSelectedPaper] = useState("");
 
   const paperOptions = [
@@ -9,12 +10,9 @@ function PaperSelection() {
 
   ];
 
-  const handleSubmit = () => {
-    if (selectedPaper) {
-      alert(`Paper type selected: ${selectedPaper}`);
-    } else {
-      alert("Please select a paper type.");
-    }
+  const handleSubmit = (data) => {
+    setNewOrderDetails({ ...newOrderDetails, ...data })
+    setStep(step + 1)
   };
 
   return (
@@ -26,12 +24,11 @@ function PaperSelection() {
             key={option.value}
             className={`card  shadow-md rounded-lg cursor-pointer overflow-hidden 
               transition-transform duration-200 ease-in-out 
-              ${
-                selectedPaper === option.value
-                  ? "ring ring-primary ring-offset-2 scale-105"
-                  : "hover:scale-105"
+              ${selectedPaper === option.value
+                ? "ring ring-primary ring-offset-2 scale-105"
+                : "hover:scale-105"
               }`}
-            onClick={() => setSelectedPaper(option.value)}
+            onClick={() => handleSubmit({ paperType: option.value })}
           >
             <img
               src={option.image}
@@ -39,18 +36,17 @@ function PaperSelection() {
               className="w-full h-32 object-cover"
             />
             <div
-              className={`p-4 text-center font-medium ${
-                selectedPaper === option.value
+              className={`p-4 text-center font-medium ${selectedPaper === option.value
                   ? "bg-primary text-primary-content"
                   : "bg-base-200 text-base-content"
-              }`}
+                }`}
             >
               {option.label}
             </div>
           </div>
         ))}
       </div>
-     
+      <NewOrderSteps setStep={setStep} step={step} />
     </div>
   );
 }
