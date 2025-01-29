@@ -23,7 +23,7 @@ function OrientationSelection({ step, setStep, newOrderDetails, setNewOrderDetai
   };
 
   return (
-    <div className="w-full mx-auto mt-8 p-6 flex items-center justify-center flex-col">
+    <div className="w-full mx-auto p-6 flex items-center justify-center flex-col">
       <h1 className="text-2xl mb-5 font-light">Select Orientation</h1>
       <div className="grid grid-cols-2 gap-10 w-1/2 h-full">
         {orientationOptions.map((option) => (

@@ -17,7 +17,7 @@ function SizeSelection({ step, setStep, newOrderDetails, setNewOrderDetails }) {
   };
 
   return (
-    <div className="w-full mx-auto mt-8 p-6 flex items-center justify-center flex-col">
+    <div className="w-full mx-auto p-6 flex items-center justify-center flex-col">
       <h1 className="text-2xl mb-5 font-light">Select Size</h1>
       <div className="grid grid-cols-1 gap-4 w-1/2">
         {sizeOptions.map((option) => (
